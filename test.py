@@ -31,6 +31,5 @@ result = model.transcribe("output.wav")
 
 print("Transcribed text:", result["text"])
 output_braille = pybrl.translate(result["text"], main_language="english")
-
 print("Braille output:", pybrl.toUnicodeSymbols(output_braille, flatten=True))
  
