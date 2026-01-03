@@ -27,7 +27,7 @@ class VoskTest:
 
 class LiteASRTest:
     def __init__(self):
-        self.dtype = torch.float16
+        self.dtype = torch.float32  # Changed from float16 to float32 for CPU compatibility
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model = AutoModel.from_pretrained(
             "efficient-speech/lite-whisper-large-v3-turbo",
@@ -70,7 +70,7 @@ def main():
 
     tests = [
         ("Vosk", vosk_test),
-        ("LiteASR", lite_test),
+        ("liteasr", lite_test),
         ("Whisper", whisper_test)
     ]
 
@@ -85,7 +85,7 @@ def main():
         for audio_name, audio_path in audios:
             try:
                 text, time_ms = test_obj.transcribe(audio_path)
-                print(f"{audio_name}: {time_ms:.2f} ms - Text: {text[:50]}...")
+                print("Time: {:.2f} ms | Audio: {} | Transcription: {}".format(time_ms, audio_name, text))
             except Exception as e:
                 print(f"{audio_name}: Error - {e}")
 
