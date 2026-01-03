@@ -14,7 +14,7 @@ class VoskTest:
 
     def transcribe(self, audio_path):
         wf = wave.open(audio_path, "rb")
-        start_time = time.time() * 1000
+        start_time = time.time() * 1000 #starting in ms
         while True:
             data = wf.readframes(4000)
             if len(data) == 0:
@@ -28,7 +28,7 @@ class VoskTest:
 class LiteASRTest:
     def __init__(self):
         self.dtype = torch.float32  # Changed from float16 to float32 for CPU compatibility
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.device = "cuda" if torch.cuda.is_available() else "cpu" # for raspi, no gpu
         self.model = AutoModel.from_pretrained(
             "efficient-speech/lite-whisper-large-v3-turbo",
             trust_remote_code=True,
@@ -41,7 +41,7 @@ class LiteASRTest:
         input_features = self.processor(audio, sampling_rate=16000, return_tensors="pt").input_features
         input_features = input_features.to(self.dtype).to(self.device)
         start_time = time.time() * 1000
-        predicted_ids = self.model.generate(input_features)
+        predicted_ids = self.model.generate(input_features, max_new_tokens=447)  # Increased max length
         transcription = self.processor.batch_decode(predicted_ids, skip_special_tokens=True)[0]
         end_time = time.time() * 1000
         transcription_time = end_time - start_time
@@ -49,7 +49,7 @@ class LiteASRTest:
 
 class WhisperTest:
     def __init__(self):
-        self.model = whisper.load_model("tiny")
+        self.model = whisper.load_model("base.en")
 
     def transcribe(self, audio_path):
         start_time = time.time() * 1000
@@ -60,9 +60,9 @@ class WhisperTest:
 
 def main():
     # Assume audio files are in the same directory
-    small_audio = "small.wav"
-    medium_audio = "medium.wav"
-    large_audio = "large.wav"
+    small_audio = "testAudio/small.wav"
+    medium_audio = "testAudio/medium.wav"
+    large_audio = "testAudio/large.wav"
 
     vosk_test = VoskTest()
     lite_test = LiteASRTest()
