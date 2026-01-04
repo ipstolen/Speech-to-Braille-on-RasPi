@@ -1,0 +1,13 @@
+pyaudio
+librosa
+numpy
+sounddevice
+vosk
+whisper
+torch
+transformers
+keyboard
+pybrl
+asciimathml
+pdfminer.six
+six

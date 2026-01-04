@@ -28,8 +28,8 @@ class VoskTest:
 
 class LiteASRTest:
     def __init__(self):
-        self.dtype = torch.float32  # Changed from float16 to float32 for CPU compatibility
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"  # for raspi, no gpu
+        self.dtype = torch.float32  
+        self.device = "cpu"  # for raspi, no gpu
         self.model = AutoModel.from_pretrained(
             "efficient-speech/lite-whisper-large-v3-turbo",
             trust_remote_code=True,
