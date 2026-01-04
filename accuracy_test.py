@@ -99,7 +99,6 @@ def main():
                 text, time_ms = test_obj.transcribe(audio_path)
                 print(f"Audio: {audio_name}")
                 print(f"Time: {time_ms:.2f} ms")
-                print(f"Transcription: {text}")
 
                 # Load ground truth
                 ground_truth = load_ground_truth(audio_name)
@@ -112,7 +111,6 @@ def main():
                 print("-" * 50)
 
                 results[test_name][audio_name] = {
-                    'transcription': text,
                     'time': time_ms,
                     'wer': wer if ground_truth else None,
                     'ground_truth': ground_truth

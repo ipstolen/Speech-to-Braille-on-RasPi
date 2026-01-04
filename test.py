@@ -18,7 +18,7 @@ stream.stop_stream()
 stream.close()
 audio.terminate()
 
-sounds_file = wave.open("large.wav", 'wb')
+sounds_file = wave.open("outputTest.wav", 'wb')
 sounds_file.setnchannels(1)
 sounds_file.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
 sounds_file.setframerate(16000)
@@ -27,7 +27,7 @@ sounds_file.close()
 
 
 model = whisper.load_model("base.en") 
-result = model.transcribe("large.wav")
+result = model.transcribe("outputTest.wav")
 
 print("Transcribed text:", result["text"])
 output_braille = pybrl.translate(result["text"], main_language="english")
