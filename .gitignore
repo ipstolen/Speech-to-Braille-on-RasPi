@@ -1,0 +1,4 @@
+*.csv
+
+#take this out once we migrate to liblouis
+*ctb

@@ -6,8 +6,13 @@ import whisper
 import librosa
 import torch
 from transformers import AutoProcessor, AutoModel
+import csv
+import os
+
+results = "results.csv"
 
 class VoskTest:
+    transcription_time = 0
     def __init__(self, model_path="vosk-model-small-en-us-0.15"):
         self.model = vosk.Model(model_path)
         self.rec = vosk.KaldiRecognizer(self.model, 16000)
@@ -24,8 +29,11 @@ class VoskTest:
         end_time = time.time() * 1000
         transcription_time = end_time - start_time
         return result["text"], transcription_time
-
+    def getTime(self):  
+        return float(self.transcription_time[0])
+    
 class LiteASRTest:
+    transcription_time = 0
     def __init__(self):
         self.dtype = torch.float32 
         self.device = "cpu" # for raspi, no gpu
@@ -47,7 +55,11 @@ class LiteASRTest:
         transcription_time = end_time - start_time
         return transcription, transcription_time
 
+    def getTime(self):
+        return float(self.transcription_time[0])
+    
 class WhisperTest:
+    transcription_time = 0
     def __init__(self):
         self.model = whisper.load_model("base.en")
 
@@ -57,6 +69,8 @@ class WhisperTest:
         end_time = time.time() * 1000
         transcription_time = end_time - start_time
         return result["text"], transcription_time
+    def getTime(self):
+        return (self.transcription_time[0])
 
 def main():
     # Assume audio files are in the same directory
@@ -80,12 +94,24 @@ def main():
         ("Large", large_audio)
     ]
 
+
+    file_exists = os.path.isfile(results)
+    csv_file = open(results, mode="a", newline="")
+    writer = csv.writer(csv_file)
+
+    if not file_exists:
+        writer.writerow([
+            "Time ms",
+            "audio_label",
+            "model",
+        ])
     for test_name, test_obj in tests:
         print(f"\n{test_name} Tests:")
         for audio_name, audio_path in audios:
             try:
                 text, time_ms = test_obj.transcribe(audio_path)
                 print("Time: {:.2f} ms | Audio: {} | Transcription: {}".format(time_ms, audio_name, text))
+                writer.writerow([f"{time_ms:.2f}", audio_name, test_name]) 
             except Exception as e:
                 print(f"{audio_name}: Error - {e}")
 
