@@ -28,9 +28,10 @@ class VoskTest:
         result = json.loads(self.rec.FinalResult())
         end_time = time.time() * 1000
         transcription_time = end_time - start_time
+        print(transcription_time)
         return result["text"], transcription_time
     def getTime(self):  
-        return float(self.transcription_time[0])
+        return self.transcription_time
     
 class LiteASRTest:
     transcription_time = 0
@@ -49,14 +50,15 @@ class LiteASRTest:
         input_features = self.processor(audio, sampling_rate=16000, return_tensors="pt").input_features
         input_features = input_features.to(self.dtype).to(self.device)
         start_time = time.time() * 1000
-        predicted_ids = self.model.generate(input_features, max_new_tokens=447)  # Increased max length
+        predicted_ids = self.model.generate(input_features, max_new_tokens=448)  # max tokens is 448
         transcription = self.processor.batch_decode(predicted_ids, skip_special_tokens=True)[0]
         end_time = time.time() * 1000
         transcription_time = end_time - start_time
+        print(transcription_time)
         return transcription, transcription_time
 
     def getTime(self):
-        return float(self.transcription_time[0])
+        return self.transcription_time
     
 class WhisperTest:
     transcription_time = 0
@@ -68,9 +70,10 @@ class WhisperTest:
         result = self.model.transcribe(audio_path)
         end_time = time.time() * 1000
         transcription_time = end_time - start_time
+        print(transcription_time)
         return result["text"], transcription_time
     def getTime(self):
-        return (self.transcription_time[0])
+        return self.transcription_time
 
 def main():
     # Assume audio files are in the same directory
@@ -83,9 +86,9 @@ def main():
     whisper_test = WhisperTest()
 
     tests = [
-        ("Vosk", vosk_test),
-        ("liteasr", lite_test),
-        ("Whisper", whisper_test)
+        ("Vosk-small-en-us-0.15", vosk_test),
+        ("lite-whisper-large-v3-turbo", lite_test),
+        ("base.en", whisper_test)
     ]
 
     audios = [
@@ -93,7 +96,6 @@ def main():
         ("Medium", medium_audio),
         ("Large", large_audio)
     ]
-
 
     file_exists = os.path.isfile(results)
     csv_file = open(results, mode="a", newline="")
@@ -111,7 +113,8 @@ def main():
             try:
                 text, time_ms = test_obj.transcribe(audio_path)
                 print("Time: {:.2f} ms | Audio: {} | Transcription: {}".format(time_ms, audio_name, text))
-                writer.writerow([f"{time_ms:.2f}", audio_name, test_name]) 
+                ##print(test_obj.getTime())
+                ##writer.writerow([f"{time_ms:.2f}", audio_name, test_name]) 
             except Exception as e:
                 print(f"{audio_name}: Error - {e}")
 
