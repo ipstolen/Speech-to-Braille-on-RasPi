@@ -76,7 +76,6 @@ class WhisperTest:
         return self.transcription_time
 
 def main():
-    # Assume audio files are in the same directory
     small_audio = "testAudio/small.wav"
     medium_audio = "testAudio/medium.wav"
     large_audio = "testAudio/large.wav"
