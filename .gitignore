@@ -2,3 +2,7 @@
 
 #take this out once we migrate to liblouis
 *ctb
+accuracy_test.py
+outputTest.wav
+transcription_speed_test.py
+testAudio
