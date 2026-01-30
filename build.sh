@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "Update"
+#echo "Update"
 sudo apt update
 sudo apt upgrade -y
 
@@ -15,11 +15,11 @@ sudo apt install -y \
     ffmpeg \
     git
 
-echo "Creating virtual environment..."
+#echo "Creating virtual environment..."
 python3 -m venv venv
 source venv/bin/activate
 
-echo "Upgrade pip"
+#echo "Upgrade pip"
 pip install --upgrade pip wheel setuptools
 
 pip install \
