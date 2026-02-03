@@ -1,5 +1,8 @@
 """Main entry point for Speech-to-Braille application."""
 
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 from .core import AudioRecorder, WhisperTranscriber, BrailleTranslator
 from .config import WAV_FILE
 
