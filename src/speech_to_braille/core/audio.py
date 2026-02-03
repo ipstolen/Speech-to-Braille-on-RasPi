@@ -24,15 +24,25 @@ class AudioStreamer:
     def start_stream(self) -> None:
         """Start audio stream from the specified input device."""
         format_code = getattr(pyaudio, FORMAT)
-        self.stream = self.audio.open(
-            format=format_code,
-            channels=CHANNELS,
-            rate=RATE,
-            input=True,
-            frames_per_buffer=CHUNK,
-            input_device_index=INPUT_DEVICE_INDEX,
-            stream_callback=self._audio_callback
-        )
+
+        # Build stream parameters
+        stream_params = {
+            'format': format_code,
+            'channels': CHANNELS,
+            'rate': RATE,
+            'input': True,
+            'frames_per_buffer': CHUNK,
+            'stream_callback': self._audio_callback
+        }
+
+        # Only set device index if specified (None = use system default)
+        if INPUT_DEVICE_INDEX is not None:
+            stream_params['input_device_index'] = INPUT_DEVICE_INDEX
+            print(f"Using audio device index: {INPUT_DEVICE_INDEX}")
+        else:
+            print("Using system default audio input device")
+
+        self.stream = self.audio.open(**stream_params)
         self.is_recording = True
         print("Audio stream started. Speak into the microphone...")
         print("Press Ctrl+C to stop.")

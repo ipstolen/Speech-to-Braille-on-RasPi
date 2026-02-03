@@ -13,3 +13,7 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
+
+# Configuration files
+.env
+.env.local

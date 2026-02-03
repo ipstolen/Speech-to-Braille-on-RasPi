@@ -12,6 +12,7 @@ dependencies = [
     "pyaudio",
     "numpy",
     "whisper-cpp-python",
+    "pybrl",
 ]
 
 [project.optional-dependencies]

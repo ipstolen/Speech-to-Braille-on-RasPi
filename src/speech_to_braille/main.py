@@ -24,6 +24,9 @@ def main():
     # Start audio streaming
     audio_streamer.start_stream()
 
+    # Initialize Braille translator
+    translator = BrailleTranslator()
+
     # Process streaming audio and transcribe in real-time
     print("\nStarting real-time transcription...\n")
     try:
@@ -36,13 +39,15 @@ def main():
             print(transcribed_text)
             print("=" * 60)
 
-            # TODO: Braille translation (currently disabled)
-            # translator = BrailleTranslator()
-            # braille_output = translator.translate(transcribed_text)
-            # if braille_output:
-            #     print("\nBRAILLE:")
-            #     print(braille_output)
-            #     print("=" * 60)
+            # Translate to Braille
+            braille_output = translator.translate(transcribed_text)
+            if braille_output:
+                print("\nBRAILLE (Unicode):")
+                print(braille_output)
+                print("=" * 60)
+            else:
+                print("\nBraille translation failed")
+                print("=" * 60)
 
     except KeyboardInterrupt:
         print("\n\nShutting down...")

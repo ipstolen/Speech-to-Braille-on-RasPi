@@ -1,3 +1,4 @@
 pyaudio
 numpy
 whisper-cpp-python
+git+https://github.com/ant0nisk/pybrl.git

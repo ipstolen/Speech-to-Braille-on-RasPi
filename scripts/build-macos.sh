@@ -21,7 +21,8 @@ pip install --upgrade pip wheel setuptools
 echo "Installing Python packages..."
 pip install \
     pyaudio \
-    numpy
+    numpy \
+    git+https://github.com/ant0nisk/pybrl.git
 
 # Install whisper-cpp-python with CMAKE_ARGS to bypass version check
 echo "Installing whisper-cpp-python (this may take a few minutes)..."
