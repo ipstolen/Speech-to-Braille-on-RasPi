@@ -9,7 +9,7 @@ if ! command -v brew &> /dev/null; then
 fi
 
 # Install dependencies
-brew install portaudio ffmpeg
+brew install portaudio ffmpeg cmake
 
 echo "Creating virtual environment..."
 python3 -m venv venv
@@ -20,11 +20,12 @@ pip install --upgrade pip wheel setuptools
 
 echo "Installing Python packages..."
 pip install \
-    torch \
-    torchvision \
-    torchaudio \
-    openai-whisper \
-    pyaudio
+    pyaudio \
+    numpy
+
+# Install whisper-cpp-python with CMAKE_ARGS to bypass version check
+echo "Installing whisper-cpp-python (this may take a few minutes)..."
+CMAKE_ARGS="-DCMAKE_POLICY_VERSION_MINIMUM=3.5" pip install whisper-cpp-python
 
 chmod +x scripts/build-macos.sh
 chmod +x scripts/run.sh

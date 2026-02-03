@@ -13,7 +13,9 @@ sudo apt install -y \
     portaudio19-dev \
     libasound2-dev \
     ffmpeg \
-    git
+    git \
+    build-essential \
+    cmake
 
 #echo "Creating virtual environment..."
 python3 -m venv venv
@@ -23,11 +25,12 @@ source venv/bin/activate
 pip install --upgrade pip wheel setuptools
 
 pip install \
-    torch \
-    torchvision \
-    torchaudio \
-    openai-whisper \
     pyaudio \
+    numpy
+
+# Install whisper-cpp-python with CMAKE_ARGS to bypass version check
+echo "Installing whisper-cpp-python (this may take several minutes on Pi5)..."
+CMAKE_ARGS="-DCMAKE_POLICY_VERSION_MINIMUM=3.5" pip install whisper-cpp-python
 
 chmod +x scripts/build.sh
 chmod +x scripts/run.sh
