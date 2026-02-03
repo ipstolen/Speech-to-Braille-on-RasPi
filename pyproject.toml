@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "speech-to-braille"
+version = "0.1.0"
+description = "Convert spoken audio to text and translate to Braille for display on Raspberry Pi 5"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "torch",
+    "torchvision",
+    "torchaudio",
+    "openai-whisper",
+    "pyaudio",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "flake8",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
