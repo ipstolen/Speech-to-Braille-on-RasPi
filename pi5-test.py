@@ -9,6 +9,7 @@ CHANNELS = 1
 FORMAT = pyaudio.paInt16
 WAV_FILE = "outputTest.wav"
 
+# Now exists in AudioRecorder class
 audio = pyaudio.PyAudio()
 
 stream = audio.open(
@@ -41,11 +42,14 @@ with wave.open(WAV_FILE, 'wb') as wf:
     wf.setframerate(RATE)
     wf.writeframes(b''.join(frames))
 
+# Now in WhisperTranscriber class
 print("Transcribing...")
 
 model = whisper.load_model("base.en")
 result = model.transcribe(WAV_FILE)
 
+
+# BrailleTranslator class
 print("Transcribed text:")
 print(result["text"])
 
